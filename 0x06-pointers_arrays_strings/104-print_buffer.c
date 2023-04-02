@@ -1,52 +1,41 @@
 #include "main.h"
+#include <stdio.h>
 /**
-*print_buffer -  C function that prints the content of an
-*  inputted number of bytes from a buffer.
-* Prints 10 bytes per line.
-* Starts with the position of the first byte in hexadecimal (8 chars),
-* starting with `0`.
-* Each line shows the hexadecimal content (2 chars) of the buffer,
-* 2 bytes at a time, separated by a space.
-* Each line shows the content of the buffer.
-* Prints the byte if it is printable; if not, prints `.`.
-* Each line ends with a new line `\n`.
-* If the inputted byte size is 0 or less, the function only prints a new line.
-*@b: number of bytes
-*@size: size of the byte
-*/
+ * print_buffer - function that prints a buffer
+ * @b: input
+ * @size: input
+ * Return: output
+ */
 void print_buffer(char *b, int size)
 {
-	int i = 0, j;
+	int i, j, k, f;
 
-	if (size < 0)
+	if (size <= 0)
 	{
-		printf('\n');
+		printf("\n");
 		return;
 	}
-
-	while (i < size)
+	for (i = 0; i < size; i += 10)
 	{
-		if (i % 10 == 0)
-			printf("%08x: ", i);
-		for (j = i; j < i + 9; j += 2)
+		printf("%08x: ", i);
+		for (j = i; j < i + 10; j += 2)
 		{
-			if ((j < size) && ((j + 1) < size))
-				printf("%02x%02x: ", b[j], b[j + 1]);
-			else
-			{
-				while (++j <= i + 10)
-					printf(" ");
-				printf(" ");
-			}
+			for (k = j; k <= j + 1; k++)
+				if ((b[k] != 0) && (k < size))
+					printf("%02x", b[k]);
+				else if (k < size)
+					printf("%02x", 0);
+				else
+					printf("  ");
+			printf(" ");
 		}
-		for (j = i; j < i + 9 && j < size; j++)
+		for (f = i; f < i + 10; f++)
 		{
-			if (b[j] >= 32 && b[j] <= 126)
-				printf("%c", b[j]);
-			else
-				printf(".");
+			if ((b[f] >= 32 && b[f] <= 126) && (f < size))
+				printf("%c", b[f]);
+			else if (f < size)
+				printf("%c", '.');
 		}
-		printf('\n');
-		i += 10;
+		printf("\n");
 	}
 }
